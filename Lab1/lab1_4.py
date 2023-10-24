@@ -1,22 +1,23 @@
 from csv import reader
 from datetime import datetime
 import random
+MAX_NAME_LENGTH = 30
 
 with open("books.csv", encoding="cp1251") as csv_books:
     
-    file = reader(csv_books,delimiter=";")
+    file = reader(csv_books, delimiter=";")
     books = list(file)
     books = books[1:]
     
     # 1°
-    num_lines= len(books)
+    num_lines = len(books)
     print("Number of books: ", num_lines)
     
     # 2°
     a=0
     for book in books:
-        lenght= len(book[1])
-        if lenght>30:
+        lenght = len(book[1])
+        if lenght>MAX_NAME_LENGTH:
             a+=1
     print("\nQuantity of books with more than 30 characters: ", a)
     
@@ -30,11 +31,11 @@ with open("books.csv", encoding="cp1251") as csv_books:
         date = book[6]
         
         # 13.01.2017 16:24
-        dateTimeObj = datetime.strptime(date, "%d.%m.%Y %H:%M")
-        year = dateTimeObj.year
+        date_time_obj = datetime.strptime(date, "%d.%m.%Y %H:%M")
+        year = date_time_obj.year
         
-        # if year in [2014, 2016, 2017]:
-        if year == 2014 or year == 2016 or year == 2017:
+        
+        if year in [2014, 2016, 2017]:
             if author == given_author:
                 count += 1
                 print(f"{count}/. {author} - {book_name}")
