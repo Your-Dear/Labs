@@ -1,6 +1,4 @@
 import numpy as np
-import sys
-np.set_printoptions(threshold=sys.maxsize)
 
 ITEMS = [
     ["Винтовка", "в", 3, 25],
@@ -81,9 +79,9 @@ Any sickness?
     dp = np.zeros((N + 1, cells + 1), dtype=int)
     result = solve(dp, cells)
     included_items = getItems(dp, cells, result)
-    final_survival_points = result * 2 - survival_points
+    final_survival_points = result * 2 - TOTAL_VALUE + survival_points
     if final_survival_points > 0:
-        print("Survive with: ", survival_points)
+        print("Survive with:", final_survival_points)
         print(included_items)
     else:
         print("Does not survive")
