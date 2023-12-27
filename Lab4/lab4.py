@@ -1,16 +1,16 @@
 import numpy as np
 
 ITEMS = [
-    ["Винтовка", "в", 3, 25],
-    ["Пистолет", "п", 2, 15],
-    ["Топор", "т", 3, 20],
-    ["Боекомплект", "б", 2, 15],
-    ["Аптечка", "а", 2, 20],
     ["Нож", "н", 1, 15],
     ["Оберег", "о", 1, 25],
     ["Фляжка", "ф", 1, 15],
+    ["Аптечка", "а", 2, 20],
+    ["Боекомплект", "б", 2, 15],
+    ["Пистолет", "п", 2, 15],
     ["Еда", "к", 2, 20],
-    ["Арбалет", "р", 2, 20]
+    ["Арбалет", "р", 2, 20],
+    ["Винтовка", "в", 3, 25],
+    ["Топор", "т", 3, 20]
 ]
 
 MANDATORY_ITEMS = [
@@ -23,8 +23,7 @@ TOTAL_VALUE = sum([ITEMS[i][3] for i in range(len(ITEMS))])
 INF = np.inf
 
 
-def solve(dp, cells):
-    
+def solve(dp, cells): 
     for item_id in range(N + 1):
         for space in range(cells + 1):
             if item_id == 0 or space == 0:
@@ -54,6 +53,23 @@ def getItems(dp, space, result):
     return included_items
 
 
+def print_matrix(size, items, extra):
+    if extra: items.append(MANDATORY_ITEMS[extra])
+    matrix = [["" for _ in range(size[1])] for _ in range(size[0])]
+    for i in range(size[0]):
+        for j in range(items[i][2]):
+            matrix[i][j] = items[i][1]
+    items = items[size[0]:]
+    for j in range(size[1] - 1, -1, -1):
+        for i in range(size[0] - 1, -1, -1):
+            if(not len(items)): break
+            if matrix[i][j] == "":
+                for k in range(i, i + items[i][2]):
+                    matrix[k][j] = items[0][1]
+                items = items[1:]
+    print(np.matrix(matrix))
+
+
 def main():
     sick = int(input("""
 Any sickness?
@@ -66,7 +82,6 @@ Any sickness?
     cells_y = int(input("Cells y: "))
     cells = cells_x * cells_y
 	
-
     if sick == 1:
         survival_points += MANDATORY_ITEMS[sick - 1][3] - MANDATORY_ITEMS[sick][3]
         cells -= MANDATORY_ITEMS[sick - 1][2]
@@ -81,10 +96,10 @@ Any sickness?
     included_items = getItems(dp, cells, result)
     final_survival_points = result * 2 - TOTAL_VALUE + survival_points
     if final_survival_points > 0:
-        print("Survive with:", final_survival_points)
-        print(included_items)
+        print("\nSurvive with:", final_survival_points)
+        print_matrix((cells_x, cells_y), included_items, sick - 1)
     else:
-        print("Does not survive")
+        print("\nDoes not survive")
     return
 
 if __name__ == "__main__":
