@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Towns</title>
+    <link rel="stylesheet" href="/static/main.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Edit one of your visited towns!</h1>
+        <ul>
+            <li class="town-item">
+                {{ town['name'] }} - {{ town['date'] }}
+            </li>
+        </ul>
+        <div class="form-section">
+            <form action="{{ url_for('edit', index=index) }}" method="post">
+                <input type="text" name="name" value="{{town['name']}}" required>
+                <input type="date" name="date" value="{{town['date']}}">
+                <button type="submit">Edit Town</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
